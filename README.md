@@ -15,7 +15,7 @@
 
 ## Find the Live Server here
 
-> ✨ Project URL: https://blooming-temple-22709.herokuapp.com/api/v1/ > <br>
+> ✨ Project URL: https://hngtask-resume-olajide.herokuapp.com/ > <br>
 
 ## Install all application
 
