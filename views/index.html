@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <style>
 
+.error-message {
+  color: red;
+  background: #ffe0e0;
+}
+
 .alert {
   padding: 20px;
   background-color: #04AA6D;
@@ -918,16 +923,19 @@ h4 {
           <div class="field-left">
           
               <div class="form-title">Name:</div>
-              <input type="text" name="name" placeholder="Enter your name" class="form-field" required="true">
+              <input type="text" name="name" id="name" placeholder="Enter your fullname" class="form-field" required="true" onkeyup='validateName()'>
+              <span class='error-message' id='name-error'></span><br />
           
               <div class="form-title">Email:</div>
-              <input type="email" name="email" placeholder="Enter your email" class="form-field" required="true">
+              <input type="email" name="email" id="email" placeholder="Enter your email" class="form-field" required="true" onkeyup='validateEmail()'>
+              <span class='error-message' id='email-error'></span><br />
           
           </div>
           <div class="field-right">
           
               <div class="form-title">Subject :</div>
-              <input type="text" name="subject" placeholder="Enter the subject" class="form-field" required="true">
+              <input type="text" name="subject" id="subject" placeholder="Enter the subject" class="form-field" required="true" onkeyup='validateSubject()'>
+              <span class='error-message' id='subject-error'></span><br />
           
               <div class="form-title">Website <span style="color:#aaaaaa">(If applicable)</span>:</div>
               <input type="text" name="website" placeholder="Enter the URL" class="form-field">
@@ -935,7 +943,8 @@ h4 {
           </div>
           
               <div class="form-title">Message:</div>
-              <textarea name="message" rows="10" placeholder="Enter your message" class="form-field form-message" required="true"></textarea>
+              <textarea name="message" id="message" rows="10" placeholder="Enter your message" class="form-field form-message" required="true" onkeyup='validateMessage()'></textarea>
+              <span class='error-message' id='message-error'></span><br />
           
               <div>
                  <input type="submit" value="Submit" class="flat-btn">
@@ -953,7 +962,115 @@ h4 {
     $(window).on('scroll', function() {
   $('.upper-quarter').css('background-position', '0 -' + $(this).scrollTop() / 2 + 'px');
 });
+</script>
   </script>
+
+    <script type="text/javascript">
+    function validateName() {
+
+      var name = document.getElementById('name').value;
+
+      if(name.length == 0) {
+
+        producePrompt('Name is required', 'name-error' , 'red')
+        return false;
+
+    }
+
+    if (!name.match(/^[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+
+        producePrompt('Invalid name.','name-error', 'red');
+        return false;
+
+    }
+
+    producePrompt('Valid', 'name-error', 'green');
+    return true;
+
+}
+
+function validateSubject() {
+
+var subject = document.getElementById('subject').value;
+
+if(subject.length == 0) {
+
+  producePrompt('Subject is required', 'name-error' , 'red')
+  return false;
+
+}
+
+producePrompt('Valid', 'name-error', 'green');
+return true;
+}
+
+function validateEmail () {
+
+  var email = document.getElementById('email').value;
+
+  if(email.length == 0) {
+
+    producePrompt('Email is Invalid','email-error', 'red');
+    return false;
+
+}
+
+if(!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+
+    producePrompt('Email is Invalid', 'email-error', 'red');
+    return false;
+
+}
+
+producePrompt('Valid', 'email-error', 'green');
+return true;
+
+}
+
+function validateMessage() {
+  var message = document.getElementById('message').value;
+  var required = 30;
+  var left = required - message.length;
+
+  if (left > 0) {
+    producePrompt(left + ' more characters required','message-error','red');
+    return false;
+}
+
+producePrompt('Valid', 'message-error', 'green');
+return true;
+
+}
+
+function validateForm() {
+  if (!validateName() || !validatePhone() || !validateEmail() || !validateMessage()) {
+    jsShow('submit-error');
+    producePrompt('Please fix errors to submit.', 'submit-error', 'red');
+    setTimeout(function(){jsHide('submit-error');}, 2000);
+    return false;
+}
+else {
+
+}
+}
+
+function jsShow(id) {
+  document.getElementById(id).style.display = 'block';
+}
+
+function jsHide(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+
+function producePrompt(message, promptLocation, color) {
+
+  document.getElementById(promptLocation).innerHTML = message;
+  document.getElementById(promptLocation).style.color = color;
+
+}
+
+</script>
 
 </body>
 </html>
